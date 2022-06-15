@@ -1,4 +1,4 @@
-﻿namespace DHI.InterviewTask;
+﻿namespace DHI.InterviewTask.Models;
 
 public enum SurfaceType
 {

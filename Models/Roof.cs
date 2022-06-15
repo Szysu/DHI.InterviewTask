@@ -1,8 +1,8 @@
-﻿namespace DHI.InterviewTask;
+﻿namespace DHI.InterviewTask.Models;
 
 public class Roof
 {
-    public Roof(string name, SurfaceType surfaceType, object area)
+    public Roof(string name, SurfaceType surfaceType, int area)
     {
         Name = name;
         SurfaceType = surfaceType;
@@ -11,5 +11,5 @@ public class Roof
 
     public string Name { get; }
     public SurfaceType SurfaceType { get; }
-    public object Area { get; }
+    public int Area { get; }
 }
