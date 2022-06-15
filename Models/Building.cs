@@ -45,6 +45,16 @@ public class Building
         return GetInnerWidth() * AspectRatio;
     }
 
+    public float GetOuterWidth()
+    {
+        return GetTotalWidth() - GetInnerWidth();
+    }
+
+    public float GetOuterLength()
+    {
+        return GetTotalLength() - GetInnerLength();
+    }
+
     public float GetGreenLength()
     {
         var innerArea = GravelSurface.Area + GreenSurface.Area;

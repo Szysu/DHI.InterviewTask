@@ -6,8 +6,7 @@ public static class MatrixExporter
 {
     public static void ExportToFile(int[,] matrix)
     {
-        var plainMatrix = GetPlainMatrix(matrix);
-        File.WriteAllText($"{Environment.CurrentDirectory}/results.txt", plainMatrix);
+        File.WriteAllText($"{Environment.CurrentDirectory}/results.txt", GetPlainMatrix(matrix));
     }
 
     private static string GetPlainMatrix(int[,] matrix)

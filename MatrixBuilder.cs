@@ -5,6 +5,7 @@ namespace DHI.InterviewTask;
 public class MatrixBuilder
 {
     private const int Margin = 2;
+    private const int SpaceBetweenBuildings = 2;
 
     public MatrixBuilder(List<Building> buildings, float cellSize)
     {
@@ -18,9 +19,8 @@ public class MatrixBuilder
     }
 
     private List<Building> Buildings { get; }
-    private int[,] Matrix { get; }
-
     private float CellSize { get; }
+    private int[,] Matrix { get; }
 
     public int[,] Build()
     {
@@ -33,22 +33,19 @@ public class MatrixBuilder
     {
         var width = Buildings.Sum(b => b.GetTotalWidth());
         width /= CellSize;
-        // spaces between buildings
-        width += (Buildings.Count - 1) * Margin;
-        // top and bottom margins
+        width += (Buildings.Count - 1) * SpaceBetweenBuildings;
         width += Margin * 2;
-        width = MathF.Ceiling(width);
-        return (int) width;
+
+        return (int) MathF.Ceiling(width);
     }
 
     private int CalculateMatrixLength()
     {
         var length = Buildings.Max(b => b.GetTotalLength());
         length /= CellSize;
-        // left and right margins
         length += Margin * 2;
-        length = MathF.Ceiling(length);
-        return (int) length;
+
+        return (int) MathF.Ceiling(length);
     }
 
     private void AddOuterRoofsToMatrix()
@@ -68,7 +65,7 @@ public class MatrixBuilder
                 }
             }
 
-            widthBuffer += i + Margin;
+            widthBuffer += i + SpaceBetweenBuildings;
         }
     }
 
@@ -77,17 +74,13 @@ public class MatrixBuilder
         var widthBuffer = Margin;
         foreach (var building in Buildings)
         {
-            var totalLength = MathF.Round(building.GetTotalLength() / CellSize);
-            var innerLength = MathF.Round(building.GetInnerLength() / CellSize);
-            var sealedRoofLength = totalLength - innerLength;
-            var lengthPadding = sealedRoofLength / 2;
+            var widthPadding = building.GetOuterWidth() / CellSize / 2;
+            var lengthPadding = building.GetOuterLength() / CellSize / 2;
 
-            var totalWidth = MathF.Round(building.GetTotalWidth() / CellSize);
-            var innerWidth = MathF.Round(building.GetInnerWidth() / CellSize);
-            var sealedRoofWidth = totalWidth - innerWidth;
-            var widthPadding = sealedRoofWidth / 2;
+            var innerWidth = building.GetInnerWidth() / CellSize;
+            var innerLength = building.GetInnerLength() / CellSize;
 
-            var gravelLength = MathF.Round(building.GetGravelLength() / CellSize);
+            var gravelLength = building.GetGravelLength() / CellSize;
 
             int i;
             for (i = 0; i < innerWidth; i++)
@@ -98,12 +91,14 @@ public class MatrixBuilder
                         ? SurfaceType.Gravel
                         : SurfaceType.Green;
 
-                    Matrix[i + (int) widthPadding + widthBuffer, j + Margin + (int) lengthPadding] =
-                        (int) surfaceType;
+                    var yCursor = (int) (i + widthPadding + widthBuffer);
+                    var xCursor = (int) (j + Margin + lengthPadding);
+
+                    Matrix[yCursor, xCursor] = (int) surfaceType;
                 }
             }
 
-            widthBuffer += i + Margin + (int) Math.Round(widthPadding * 2);
+            widthBuffer += i + SpaceBetweenBuildings + (int) Math.Round(widthPadding * 2);
         }
     }
 }
