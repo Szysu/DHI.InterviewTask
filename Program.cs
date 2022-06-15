@@ -22,3 +22,5 @@ var matrix = new MatrixBuilder(buildings, cellSize).Build();
 MatrixExporter.ExportToFile(matrix);
 
 Console.WriteLine($"The results saved to: {Environment.CurrentDirectory}/results.txt");
+Console.WriteLine("Press any key...");
+Console.Read();
